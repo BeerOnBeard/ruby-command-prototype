@@ -11,6 +11,7 @@ RSpec.describe Bookstore do
       arguments = Bookstore::AddBookCommand::Arguments.cast(
         {
           book: {
+            isbn: '978-0553213119',
             name: 'Moby Dick'
           }
         }

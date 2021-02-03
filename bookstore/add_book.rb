@@ -9,6 +9,7 @@ class Bookstore
 
       attributes do
         hash :book do
+          string :isbn
           string :name
         end
       end

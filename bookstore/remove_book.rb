@@ -9,7 +9,7 @@ class Bookstore
 
       attributes do
         hash :book do
-          string :name
+          string :isbn
         end
       end
     end
@@ -25,7 +25,7 @@ class Bookstore
   # @param arguments [RemoveBookCommand::Arguments]
   def remove_book(arguments:)
     RemoveBookCommand.validate
-    book = books.find { |b| b[:name] == arguments[:book][:name] }
+    book = books.find { |b| b[:isbn] == arguments[:book][:isbn] }
     books.delete(book)
   end
 end

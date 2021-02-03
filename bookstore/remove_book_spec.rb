@@ -6,11 +6,13 @@ require_relative 'remove_book'
 
 RSpec.describe Bookstore do
   describe 'Remove book' do
+    let(:isbn) { '978-0553213119' }
     let!(:bookstore) do
       bookstore = Bookstore.new
       arguments = Bookstore::AddBookCommand::Arguments.cast(
         {
           book: {
+            isbn: isbn,
             name: 'Moby Dick'
           }
         }
@@ -25,7 +27,7 @@ RSpec.describe Bookstore do
       arguments = Bookstore::RemoveBookCommand::Arguments.cast(
         {
           book: {
-            name: 'Moby Dick'
+            isbn: isbn
           }
         }
       )
