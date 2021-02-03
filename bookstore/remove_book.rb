@@ -3,7 +3,7 @@
 require 'hashcast'
 
 class Bookstore
-  module AddBookCommand
+  module RemoveBookCommand
     class Arguments
       include HashCast::Caster
 
@@ -15,16 +15,17 @@ class Bookstore
     end
 
     def self.validate
-      puts 'Add'
+      puts 'Remove'
     end
   end
 
   ##
-  # Add a book
+  # Remove a book
   #
-  # @param arguments [AddBookCommand::Arguments]
-  def add_book(arguments:)
-    AddBookCommand.validate
-    books.push(arguments[:book])
+  # @param arguments [RemoveBookCommand::Arguments]
+  def remove_book(arguments:)
+    RemoveBookCommand.validate
+    book = books.find { |b| b[:name] == arguments[:book][:name] }
+    books.delete(book)
   end
 end

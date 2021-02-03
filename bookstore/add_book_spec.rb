@@ -5,9 +5,10 @@ require_relative 'add_book'
 
 RSpec.describe Bookstore do
   describe 'Add book' do
+    let!(:bookstore) { Bookstore.new }
+
     it 'should add a book to the inventory' do
-      bookstore = Bookstore.new
-      arguments = Bookstore::AddBookArguments.cast(
+      arguments = Bookstore::AddBookCommand::Arguments.cast(
         {
           book: {
             name: 'Moby Dick'
