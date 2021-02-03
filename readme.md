@@ -2,6 +2,12 @@
 
 Prototyping to show different styles of applying commands to Ruby classes.
 
+```bash
+gem install bundler
+bundle install
+bundle exec rspec
+```
+
 ## Bookstore
 
 Works on the principal that Ruby classes can be re-opened and added to.
