@@ -9,32 +9,62 @@ RSpec.describe Bookstore do
     let(:isbn) { '978-0553213119' }
     let!(:bookstore) do
       bookstore = Bookstore.new
-      arguments = Bookstore::AddBookCommand::Arguments.cast(
-        {
-          book: {
-            isbn: isbn,
-            name: 'Moby Dick'
-          }
+      bookstore.add_book(
+        arguments: {
+          isbn: isbn,
+          name: 'Moby Dick'
         }
       )
-
-      bookstore.add_book(arguments: arguments)
 
       return bookstore
     end
 
-    it 'should add a book to the inventory' do
-      arguments = Bookstore::RemoveBookCommand::Arguments.cast(
-        {
-          book: {
+    context 'without an isbn' do
+      it 'should raise an error' do
+        expect do
+          bookstore.remove_book(
+            arguments: {
+            }
+          )
+        end.to raise_error(HashCast::Errors::MissingAttributeError)
+      end
+    end
+
+    context 'with a malformed isbn' do
+      it 'should raise an error' do
+        expect do
+          bookstore.remove_book(
+            arguments: {
+              isbn: 1
+            }
+          )
+        end.to raise_error(HashCast::Errors::CastingError)
+      end
+    end
+
+    context 'with extra arguments' do
+      it 'should raise an error' do
+        expect do
+          bookstore.remove_book(
+            arguments: {
+              isbn: isbn,
+              extra: 'extra'
+            }
+          )
+        end.to raise_error(HashCast::Errors::UnexpectedAttributeError)
+      end
+    end
+
+    context 'with valid arguments' do
+      it 'should remove the book from the inventory' do
+        bookstore.remove_book(
+          arguments: {
             isbn: isbn
           }
-        }
-      )
+        )
 
-      bookstore.remove_book(arguments: arguments)
-
-      expect(bookstore.books).to be_empty
+        expect(bookstore.books).not_to include({ isbn: isbn })
+      end
     end
   end
 end

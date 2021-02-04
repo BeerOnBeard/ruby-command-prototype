@@ -8,10 +8,8 @@ class Bookstore
       include HashCast::Caster
 
       attributes do
-        hash :book do
-          string :isbn
-          string :name
-        end
+        string :isbn
+        string :name, optional: true
       end
     end
 
@@ -23,9 +21,11 @@ class Bookstore
   ##
   # Add a book
   #
-  # @param arguments [AddBookCommand::Arguments]
+  # @param [AddBookCommand::Arguments] arguments
   def add_book(arguments:)
+    book = AddBookCommand::Arguments.cast(arguments)
+
     AddBookCommand.validate
-    books.push(arguments[:book])
+    books.push(book)
   end
 end

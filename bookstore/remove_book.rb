@@ -4,13 +4,14 @@ require 'hashcast'
 
 class Bookstore
   module RemoveBookCommand
+    class BadArgumentsError < StandardError
+    end
+
     class Arguments
       include HashCast::Caster
 
       attributes do
-        hash :book do
-          string :isbn
-        end
+        string :isbn
       end
     end
 
@@ -22,10 +23,12 @@ class Bookstore
   ##
   # Remove a book
   #
-  # @param arguments [RemoveBookCommand::Arguments]
+  # @param [RemoveBookCommand::Arguments] arguments
   def remove_book(arguments:)
+    book = RemoveBookCommand::Arguments.cast(arguments)
+
     RemoveBookCommand.validate
-    book = books.find { |b| b[:isbn] == arguments[:book][:isbn] }
-    books.delete(book)
+    book_to_delete = books.find { |b| b[:isbn] == book[:isbn] }
+    books.delete(book_to_delete)
   end
 end
